@@ -66,43 +66,48 @@ void cmdMode()
   digitalWrite(DI, 0);
 }
 
+void setAdr(page, colhi, collo)
+{
+  char cmd;
+  cmdMode();
+  cmd = CMDSETPAGEADR + page;
+  wiringPiSPIDataRW(0, &cmd, 1);
+  cmd = CMDSETCOLADRHI + colhi;
+  wiringPiSPIDataRW(0, &cmd, 1);
+  cmd = CMDSETCOLADRLO + collo;
+  wiringPiSPIDataRW(0, &cmd, 1);
+}
+
 void print(int display[64][128])
 {
 
-  int page = 0;
+  int page, p, byte;
   int x = 0;
 
   char pixelstowrite[8];
 
-  char byte;
+  unsigned char line[8][128];
 
   int bit;
 
-  char pagecommand;
-
-  for (page=0;page<8;page++)
+  for (page = 0; page < 8; page++)
   {
-    pagecommand = CMDSETPAGEADR + page;
-    printf("Page %x \n",pagecommand);
-    cmdMode();
-    wiringPiSPIDataRW(0, &pagecommand, 1);
-    pagecommand = CMDSETCOLADRHI;
-    wiringPiSPIDataRW(0, &pagecommand, 1);
-    pagecommand = CMDSETCOLADRLO;
-    wiringPiSPIDataRW(0, &pagecommand, 1);
-    
-    for (x=0;x<128;x+=1)
+    for (x = 0;x < 128; x++)
     {
-      
       byte = 0;
-      for (bit=0;bit<8;bit++)
+      for (bit = 0; bit < 8; bit++)
       {
-          byte = display[page*8+bit][x] << bit;
+        byte = byte + (display[page * 8 + bit][x] << bit);
       }
-       writeMode();
-      
-      wiringPiSPIDataRW(0, &byte, 1);
+      line[page][x] = byte;
     }
+  }
+
+  for (page = 0;page<8;page++)
+  {
+    setAdr(page, 0, 0);
+    writeMode();
+    wiringPiSPIDataRW(0, line[page], 128);
   }
 }
 
@@ -168,13 +173,27 @@ int main()
   display[9][5] = 1;
   display[10][5] = 1;
   display[11][5] = 1;
-  display[12][5] = 1;
-  display[13][5] = 1;
+  display[50][5] = 1;
+  display[13][20] = 1;
   display[14][5] = 1;
   display[15][5] = 1;
   display[16][5] = 1;
   display[17][5] = 1;
   display[18][5] = 1;
+  display[5][8] = 1;
+  display[6][9] = 1;
+  display[7][10] = 1;
+  display[8][11] = 1;
+  display[9][12] = 1;
+  display[10][13] = 1;
+  display[11][14] = 1;
+  display[12][15] = 1;
+  display[13][16] = 1;
+  display[14][17] = 1;
+  display[15][18] = 1;
+  display[16][19] = 1;
+  display[17][20] = 1;
+  display[18][21] = 1;
   print(display);
   
 
