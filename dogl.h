@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <string.h>
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 
 #ifndef DOGL_H
 #define DOGL_H
-#include <fonts/24x40_horizontal_LSB_1.h>
+#include <fonts/fonts.h>
 
 // GPIO PINs numbering from wiringPi
 #define DI    0

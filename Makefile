@@ -1,8 +1,17 @@
 CC=gcc
 
-LIBS=-lwiringPi
+CFLAGS = -I. -Ifonts
+LDFLAGS = -lwiringPi
 
 all: dogl
 
-dogl: dogl.c
-	$(CC) $(LIBS) dogl.c -I. -o dogl
+OBJ = dogl.o
+
+dogl: $(OBJ)
+	$(CC) $(CFLAGS) -o dogl $(OBJ) $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< 
+
+clean:
+	rm *.o dogl
