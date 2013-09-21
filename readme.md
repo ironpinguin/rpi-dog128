@@ -2,7 +2,7 @@
 
 ## Requirements
 
-[wiringPi ]{http://wiringpi.com/} Library is required.
+[wiringPi ](http://wiringpi.com/) Library is required.
 Software must run with root user!
 
 ## Hardware
