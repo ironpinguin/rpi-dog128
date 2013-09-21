@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <wiringPi.h>
-#include <wiringPiSPI.h>
 #include <dogl.h>
-#include <fonts/32x53_horizontal_LSB_1.h>
 
 unsigned char ram[128][64];
 
@@ -49,7 +45,8 @@ void setChar(character, xpos, ypos)
   unsigned char byte;
 
   startXPosition = xpos;
-  for (x = 0; x < 212; x++) {
+  //for (x = 0; x < 212; x++) {
+  for (x = 0; x < 120; x++) {
     byte = font[character][x];
     for (y = 0; y < 8; y++) {
       value = byte&1;
@@ -57,7 +54,8 @@ void setChar(character, xpos, ypos)
       ram[xpos][ypos] = value;
       position++;
       xpos++;
-      if (position == 32) {
+      //if (position == 32) {
+      if (position == 24) {
         position = 0;
         xpos = startXPosition;
         ypos++;

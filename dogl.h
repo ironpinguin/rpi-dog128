@@ -1,7 +1,17 @@
+#include <stdio.h>
+#include <wiringPi.h>
+#include <wiringPiSPI.h>
+
+#ifndef DOGL_H
+#define DOGL_H
+#include <fonts/24x40_horizontal_LSB_1.h>
+
+// GPIO PINs numbering from wiringPi
 #define DI    0
 #define LED   1
 #define RESET 2
 
+// LCD display commands
 #define CMDDISPLOFF 0xAE
 #define CMDDISPLON  0xAF
 // startline address + line (0 to 63) 
@@ -33,3 +43,9 @@
 // + val (0 to 3)
 #define CMDSETBOOSTERRATIOVAL 0x00
 #define CMDNOP 0xE3
+
+void clear();
+void show();
+void init();
+
+#endif /* DOGL_H */
