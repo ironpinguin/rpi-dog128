@@ -4,5 +4,5 @@ LIBS=-lwiringPi
 
 all: dogl
 
-dogl: main.c
-	$(CC) $(LIBS) main.c -o dogl
+dogl: dogl.c
+	$(CC) $(LIBS) dogl.c -I. -o dogl

@@ -1,48 +1,12 @@
 #include <stdio.h>
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
+#include <dogl.h>
+#include <fonts/32x53_horizontal_LSB_1.h>
 
-#define GPIO17 0
-#define GPIO18 1
-#define GPIO27 2
+unsigned char ram[128][64];
 
-#define DI    0
-#define LED   1
-#define RESET 2
-
-#define CMDDISPLOFF 0xAE
-#define CMDDISPLON  0xAF
-// startline address + line (0 to 63) 
-#define CMDSETSTARTLINE 0x40
-// +pagenumber (0 to 7)
-#define CMDSETPAGEADR 0xB0
-// + colnr_hi
-#define CMDSETCOLADRHI 0x10
-// + colnr_lo
-#define CMDSETCOLADRLO 0x00
-#define CMDADCNORMAL 0xA0
-#define CMDADCREVERSE 0xA1
-#define CMDDISPLAYNORMAL 0xA6
-#define CMDDISPLAYREVERSE 0xA7
-#define CMDALLPOINTSOFF 0xA4
-#define CMDALLPOINTSON 0xA5
-#define CMDSETLCDBIAS 0xA2
-#define CMDRESET 0xE2
-#define CMDCOMOUTMODE 0xC0
-#define CMDSETPOWERCTRL 0x2F
-// + ratio (0 to 7)
-#define CMDSETRESISTORRATIO 0x20
-#define CMDSETVOLMODE 0x81
-// + val (0 to 63)
-#define CMDSETVOLMODEVAL 0x00
-#define CMDINDICATOROFF 0xAC
-#define CMDINDICATORVAL 0x00
-#define CMDSETBOOSTERRATIO 0xF8
-// + val (0 to 3)
-#define CMDSETBOOSTERRATIOVAL 0x00
-#define CMDNOP 0xE3
-
-void clear(int display[64][128])
+void clear()
 {
   int y = 0;
   int x = 0;
@@ -51,7 +15,7 @@ void clear(int display[64][128])
   {
     for (x=0;x<128;x++)
     {
-      display[y][x] = 0;
+      ram[x][y] = 0;
     }
   }
 }
@@ -78,16 +42,36 @@ void setAdr(page, colhi, collo)
   wiringPiSPIDataRW(0, &cmd, 1);
 }
 
-void print(int display[64][128])
+void setChar(character, xpos, ypos)
 {
+  int x = 0, y = 0;
+  int value, position = 0, startXPosition;
+  unsigned char byte;
 
+  startXPosition = xpos;
+  for (x = 0; x < 212; x++) {
+    byte = font[character][x];
+    for (y = 0; y < 8; y++) {
+      value = byte&1;
+      byte = byte>>1;
+      ram[xpos][ypos] = value;
+      position++;
+      xpos++;
+      if (position == 32) {
+        position = 0;
+        xpos = startXPosition;
+        ypos++;
+      }
+    }
+  }
+}
+
+void print()
+{
   int page, p, byte;
   int x = 0;
-
   char pixelstowrite[8];
-
   unsigned char line[8][128];
-
   int bit;
 
   for (page = 0; page < 8; page++)
@@ -97,7 +81,7 @@ void print(int display[64][128])
       byte = 0;
       for (bit = 0; bit < 8; bit++)
       {
-        byte = byte + (display[page * 8 + bit][x] << bit);
+        byte = byte + (ram[x][page * 8 + bit] << bit);
       }
       line[page][x] = byte;
     }
@@ -156,45 +140,22 @@ void init()
 
 int main()
 {
-  int display[64][128];
-//  char display[64][128];
- 
+  int start = 5;
+  int c1, c2;
 
   init();
   pwmWrite(LED, 150);
-  clear(display);
+  clear();
 
-  print(display);
+  print();
+  
+  setChar('A', 2, 5);
+  setChar('l', 34, 5);
+  setChar('e', 66, 5);
+  setChar('x', 98, 5);
 
-  display[5][5] = 1;
-  display[6][5] = 1;
-  display[7][5] = 1;
-  display[8][5] = 1;
-  display[9][5] = 1;
-  display[10][5] = 1;
-  display[11][5] = 1;
-  display[50][5] = 1;
-  display[13][20] = 1;
-  display[14][5] = 1;
-  display[15][5] = 1;
-  display[16][5] = 1;
-  display[17][5] = 1;
-  display[18][5] = 1;
-  display[5][8] = 1;
-  display[6][9] = 1;
-  display[7][10] = 1;
-  display[8][11] = 1;
-  display[9][12] = 1;
-  display[10][13] = 1;
-  display[11][14] = 1;
-  display[12][15] = 1;
-  display[13][16] = 1;
-  display[14][17] = 1;
-  display[15][18] = 1;
-  display[16][19] = 1;
-  display[17][20] = 1;
-  display[18][21] = 1;
-  print(display);
+  print();
+
   
 
   return 0;
