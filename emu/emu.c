@@ -1,7 +1,3 @@
-#include <stdlib.h>
-#include <stdbool.h>
-#include <unistd.h>
-
 #include <GL/gl.h>
 #include <GL/glext.h>
 #include <GL/glut.h>

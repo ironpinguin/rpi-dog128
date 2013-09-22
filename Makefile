@@ -1,11 +1,11 @@
 CC=gcc
 
 CFLAGS = -I. -Ifonts
-LDFLAGS = -lwiringPi
+LDFLAGS = -lwiringPi -pthread
 
 all: dogl
 
-OBJ = dogl.o
+OBJ = dogl.o screen.o fonts.o
 
 dogl: $(OBJ)
 	$(CC) $(CFLAGS) -o dogl $(OBJ) $(LDFLAGS)

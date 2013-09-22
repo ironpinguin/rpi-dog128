@@ -5,7 +5,6 @@
 
 #ifndef DOGL_H
 #define DOGL_H
-#include <fonts/fonts.h>
 
 // GPIO PINs numbering from wiringPi
 #define DI    0
@@ -45,7 +44,6 @@
 #define CMDSETBOOSTERRATIOVAL 0x00
 #define CMDNOP 0xE3
 
-void clear();
 void show();
 void init();
 

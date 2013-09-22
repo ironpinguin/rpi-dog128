@@ -1,7 +1,11 @@
+CC=gcc
+
+LDFLAGS = -lglut -lGL
+
 all: emu
 
-emu:
-	gcc -o emu emu.c -lglut -lGL
+emu: emu.c
+	$(CC) -o emu emu.c $(LDFLAGS)
 
 clean:
 	rm emu
