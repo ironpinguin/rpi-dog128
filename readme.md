@@ -9,4 +9,4 @@ To test the results of your render codee locally, use the emu package.
 
 ## Hardware
 
-comming soon.
+coming soon.
