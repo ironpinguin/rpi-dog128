@@ -24,7 +24,7 @@ $(MOCK_LIB): $(MOCK_OBJ)
 	$(CC) -shared -o $@ $(MOCK_OBJ)
 
 dogl_mock: $(OBJ) $(MOCK_LIB)
-	$(CC) -o $@ dogl.o $(MOCK_OBJ) -lwiringPi_mock -L.
+	$(CC) -o $@ $(OBJ) $(MOCK_OBJ) -lwiringPi_mock -L.
 
 .c.o:
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c $<

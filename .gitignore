@@ -1,5 +1,4 @@
 dogl
-dogl.o
+*.o
 libwiringPi_mock.so
-wiringpimock.o
 dogl_mock
