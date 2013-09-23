@@ -3,6 +3,9 @@
 
 extern const unsigned char fontListe[34][3];
 
+extern const char font26[256][52];
+// TODO: add remaining fonts
+
 #define FONT4x6_1 0
 #define FONT4x6_2 1
 #define FONT5x12_1 2

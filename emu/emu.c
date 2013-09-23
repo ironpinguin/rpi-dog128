@@ -1,33 +1,17 @@
-#include <stdlib.h>
-#include <stdbool.h>
-#include <unistd.h>
-
 #include <GL/gl.h>
 #include <GL/glext.h>
 #include <GL/glut.h>
 
-#define PIXEL_WIDTH  128
-#define PIXEL_HEIGHT 64
+#include "../screen.h"
 
-// Common display functionality to be refactored:
+#define PIXEL_WIDTH   128
+#define PIXEL_HEIGHT  64
 
-unsigned char ram[128][64];
+#define SCREEN_HEIGHT 2.0
+#define SCREEN_WIDTH  2.0
 
-void clear()
-{
-  int y = 0;
-  int x = 0;
-
-  for (y=0;y<PIXEL_HEIGHT;y++)
-  {
-    for (x=0;x<PIXEL_WIDTH;x++)
-    {
-      ram[x][y] = 0;
-    }
-  }
-}
-
-// GL functionality:
+#define XOFFSET       -1.0
+#define YOFFSET       1.0
 
 static void
 renderQuad(float x1, float y1, float x2, float y2)
@@ -47,10 +31,12 @@ renderQuad(float x1, float y1, float x2, float y2)
 static void
 renderDisplayPixel(float y, float x)
 {
-    float sizex   = 2.0 / (float)PIXEL_WIDTH;
-    float sizey   = 2.0 / (float)PIXEL_HEIGHT;
-    float offsetx = -1.0 + x * sizex;
-    float offsety = 1.0 - y * sizey;
+    float view_width  = SCREEN_WIDTH;
+    float view_height = SCREEN_HEIGHT;
+    float sizex       = view_width / (float)PIXEL_WIDTH;
+    float sizey       = view_height / (float)PIXEL_HEIGHT;
+    float offsetx     = XOFFSET + x * sizex;
+    float offsety     = YOFFSET - y * sizey;
 
     renderQuad(offsetx, offsety, offsetx + sizex, offsety - sizey); 
 }
@@ -80,13 +66,15 @@ display (void)
 int
 main(int argc, char * argv[])
 {
+    char *buff = "Hallo";
     // Set display:
     clear();
-    ram[1][1] = (char)1;
-    ram[2][1] = (char)1;
-    ram[3][1] = (char)1;
-    ram[2][2] = (char)1;
+    selectFont(FONT16x26_1);
+    writeText(buff, 1, 1); 
+    buff = "Michele!";
+    writeText(buff, 1, 27);
 
+    // GL init:
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
     glutCreateWindow("Main");

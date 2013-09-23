@@ -1,7 +1,7 @@
 INC_DIR = -I. -Ifonts -Ilib/wiringPi/wiringPi
 LIB_DIR = -L/usr/local/lib
 
-LIBS = -lwiringPi
+LIBS = -lwiringPi -pthread
 
 SHLIB_EXT = so
 
@@ -12,11 +12,11 @@ MOCK_LIB = libwiringPi_mock.$(SHLIB_EXT)
 LD_FLAGS = $(LIB_DIR) $(LIBS)
 CFLAGS = -Wall -g $(INC_DIR) -fPIC
 
-SRC = dogl.c
+SRC = dogl.c screen.c fonts.c
 OBJ = $(SRC:.c=.o)
 
 dogl: $(OBJ)
-	$(CC) -o $@ dogl.o $(LD_FLAGS)
+	$(CC) -o $@ $(OBJ) $(LD_FLAGS)
 
 mock_lib: $(MOCK_LIB)
 
