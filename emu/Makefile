@@ -4,8 +4,14 @@ LDFLAGS = -lglut -lGL
 
 all: emu
 
-emu: emu.c
-	$(CC) -o emu emu.c $(LDFLAGS)
+emu: emu.c screen fonts
+	$(CC) -o emu emu.c screen.o fonts.o $(LDFLAGS)
+
+screen: ../screen.c ../screen.h
+	$(CC) -c -o screen.o ../screen.c
+
+fonts: ../fonts.h ../fonts.c
+	$(CC) -c -o fonts.o ../fonts.c
 
 clean:
-	rm emu
+	rm *.o *~ emu
