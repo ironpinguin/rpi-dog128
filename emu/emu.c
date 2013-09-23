@@ -13,11 +13,14 @@
 #define PIXEL_WIDTH   128
 #define PIXEL_HEIGHT  64
 
-#define SCREEN_HEIGHT 2.0
+#define SCREEN_HEIGHT 1.6
 #define SCREEN_WIDTH  2.0
 
 #define XOFFSET       -1.0
-#define YOFFSET       1.0
+#define YOFFSET       0.8
+
+#define BGCOLOR       0.8,0.8,0.1
+#define PIXEL_COLOR   0.3,0.3,0.3
 
 static void
 renderQuad(float x1, float y1, float x2, float y2)
@@ -35,8 +38,10 @@ renderQuad(float x1, float y1, float x2, float y2)
 }
 
 static void
-renderDisplayPixel(float y, float x)
+renderDisplayPixel(float y, float x, float r, float g, float b)
 {
+    glColor3f(r, g, b);
+
     float view_width  = SCREEN_WIDTH;
     float view_height = SCREEN_HEIGHT;
     float sizex       = view_width / (float)PIXEL_WIDTH;
@@ -54,14 +59,15 @@ display (void)
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glColor3f(1,1,1);
+    glColor3f(BGCOLOR);
+    renderQuad(XOFFSET, YOFFSET, XOFFSET+SCREEN_WIDTH, YOFFSET-SCREEN_HEIGHT);
 
     for (x=0;x<PIXEL_WIDTH;x++)
     {
         for (y=0;y<PIXEL_HEIGHT;y++)
         {
             if (ram[x][y] > 0) {
-                renderDisplayPixel(y,x);
+                renderDisplayPixel(y, x, PIXEL_COLOR);
             }
         }
     }
@@ -83,7 +89,7 @@ main(int argc, char * argv[])
     // GL init:
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-    glutCreateWindow("Main");
+    glutCreateWindow("cpi_dogl emu");
 
     glutDisplayFunc(display);
 
