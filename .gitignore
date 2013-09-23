@@ -2,3 +2,4 @@ dogl
 *.o
 libwiringPi_mock.so
 dogl_mock
+emu/emu

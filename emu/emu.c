@@ -1,6 +1,12 @@
+#if defined(__APPLE__) && defined(__MACH__)
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
+#include <GLUT/glut.h>
+#else
 #include <GL/gl.h>
 #include <GL/glext.h>
 #include <GL/glut.h>
+#endif
 
 #include "../screen.h"
 
@@ -83,5 +89,5 @@ main(int argc, char * argv[])
 
     glutMainLoop();
 
-    return EXIT_SUCCESS;
+    return 0;
 }
