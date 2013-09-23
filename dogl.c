@@ -39,7 +39,7 @@ void cmdMode()
 
 void setAdr(page, colhi, collo)
 {
-  char cmd;
+  unsigned char cmd;
   cmdMode();
   cmd = CMDSETPAGEADR + page;
   wiringPiSPIDataRW(0, &cmd, 1);
@@ -95,9 +95,8 @@ void writeText(char *buff, int xpos, int ypos)
 
 void print()
 {
-  int page, p, byte;
+  int page, byte;
   int x = 0;
-  char pixelstowrite[8];
   unsigned char line[8][128];
   int bit;
 
@@ -124,7 +123,7 @@ void print()
 
 void init()
 {
-  char cmd;
+  unsigned char cmd;
 
   wiringPiSetup();
 
@@ -167,8 +166,6 @@ void init()
 
 int main()
 {
-  int start = 5;
-  int c1, c2;
   char *buff = "Hallo";
 
   init();
