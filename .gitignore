@@ -1,5 +1,6 @@
 dogl
 *.o
 *.so
+*.a
 dogl_mock
 emu/emu

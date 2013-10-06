@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include <wiringPi.h>
-#include <wiringPiSPI.h>
+#include "wiringPi.h"
+#include "wiringPiSPI.h"
 
 #ifndef DOGL_H
 #define DOGL_H

@@ -8,7 +8,7 @@
 #include <GL/glut.h>
 #endif
 
-#include "../screen.h"
+#include "../src/screen.h"
 
 #define PIXEL_WIDTH   128
 #define PIXEL_HEIGHT  64
