@@ -9,6 +9,10 @@ mock:
 	$(MAKE) -C example
 	$(MAKE) -C emu
 
+mock-mac:
+	$(MAKE) -C src mock
+	$(MAKE) -C example mock_mac
+	$(MAKE) -f Makefile-Mac -C emu
 clean:
 	$(MAKE) -C src clean
 	$(MAKE) -C example clean

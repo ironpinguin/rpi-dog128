@@ -21,6 +21,11 @@ lib:
 
 mock: mock_lib dogl
 
+mock_mac: mock_lib dogl_mac
+
+dogl_mac: $(OBJ)
+	$(CC) -o dogl $(OBJ) ../src/*.o $(LIB_DIR)
+
 mock_lib:
 	$(MAKE) -C ../src mock
 
