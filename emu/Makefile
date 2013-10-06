@@ -7,11 +7,11 @@ all: emu
 emu: emu.c screen fonts
 	$(CC) -o emu emu.c screen.o fonts.o $(LDFLAGS)
 
-screen: ../screen.c ../screen.h
-	$(CC) -c -o screen.o ../screen.c
+screen: ../src/screen.c ../src/screen.h
+	$(CC) -c -o screen.o ../src/screen.c
 
-fonts: ../fonts.h ../fonts.c
-	$(CC) -c -o fonts.o ../fonts.c
+fonts: ../src/fonts.h ../src/fonts.c
+	$(CC) -c -o fonts.o ../src/fonts.c
 
 clean:
 	rm *.o *~ emu

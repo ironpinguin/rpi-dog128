@@ -1,5 +1,5 @@
 dogl
 *.o
-libwiringPi_mock.so
+*.so
 dogl_mock
 emu/emu
