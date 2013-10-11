@@ -78,10 +78,11 @@ display (void)
 int
 main(int argc, char * argv[])
 {
+  initFonts();
     char *buff = "Hallo";
     // Set display:
     clear();
-    selectFont(FONT10x16_1);
+    selectFont(FONT16x26_1); // FONT10x16_1);
     writeText(buff, 1, 1);
     buff = "Michele!";
     writeText(buff, 1, 27);
