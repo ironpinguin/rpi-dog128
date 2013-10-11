@@ -22,79 +22,69 @@
 #define BGCOLOR       0.8,0.8,0.1
 #define PIXEL_COLOR   0.3,0.3,0.3
 
-static void
-renderQuad(float x1, float y1, float x2, float y2)
-{
-    float z = 0.0;
+static void renderQuad(float x1, float y1, float x2, float y2) {
+  float z = 0.0;
 
-    glBegin(GL_QUADS);
+  glBegin(GL_QUADS);
 
-    glVertex3f(x1, y1, z);
-    glVertex3f(x2, y1, z);
-    glVertex3f(x2, y2, z);
-    glVertex3f(x1, y2, z);
+  glVertex3f(x1, y1, z);
+  glVertex3f(x2, y1, z);
+  glVertex3f(x2, y2, z);
+  glVertex3f(x1, y2, z);
 
-    glEnd();
+  glEnd();
 }
 
-static void
-renderDisplayPixel(float y, float x, float r, float g, float b)
-{
-    glColor3f(r, g, b);
+static void renderDisplayPixel(float y, float x, float r, float g, float b) {
+  glColor3f(r, g, b);
 
-    float view_width  = SCREEN_WIDTH;
-    float view_height = SCREEN_HEIGHT;
-    float sizex       = view_width / (float)PIXEL_WIDTH;
-    float sizey       = view_height / (float)PIXEL_HEIGHT;
-    float offsetx     = XOFFSET + x * sizex;
-    float offsety     = YOFFSET - y * sizey;
+  float view_width= SCREEN_WIDTH;
+  float view_height= SCREEN_HEIGHT;
+  float sizex = view_width / (float)PIXEL_WIDTH;
+  float sizey = view_height / (float)PIXEL_HEIGHT;
+  float offsetx= XOFFSET + x * sizex;
+  float offsety= YOFFSET - y * sizey;
 
-    renderQuad(offsetx, offsety, offsetx + sizex, offsety - sizey);
+  renderQuad(offsetx, offsety, offsetx + sizex, offsety - sizey);
 }
 
-static void
-display (void)
-{
-    int x,y;
+static void display(void) {
+  int x, y;
 
-    glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT);
 
-    glColor3f(BGCOLOR);
-    renderQuad(XOFFSET, YOFFSET, XOFFSET+SCREEN_WIDTH, YOFFSET-SCREEN_HEIGHT);
+  glColor3f(BGCOLOR);
+  renderQuad(XOFFSET, YOFFSET, XOFFSET+SCREEN_WIDTH, YOFFSET-SCREEN_HEIGHT);
 
-    for (x=0;x<PIXEL_WIDTH;x++)
-    {
-        for (y=0;y<PIXEL_HEIGHT;y++)
-        {
-            if (ram[x][y] > 0) {
-                renderDisplayPixel(y, x, PIXEL_COLOR);
-            }
-        }
+  for (x=0; x<PIXEL_WIDTH; x++) {
+    for (y=0; y<PIXEL_HEIGHT; y++) {
+      if (ram[x][y] > 0) {
+        renderDisplayPixel(y, x, PIXEL_COLOR);
+      }
     }
+  }
 
-    glutSwapBuffers();
+  glutSwapBuffers();
 }
 
-int
-main(int argc, char * argv[])
-{
+int main(int argc, char * argv[]) {
   initFonts();
-    char *buff = "Hallo";
-    // Set display:
-    clear();
-    selectFont(FONT16x26_1); // FONT10x16_1);
-    writeText(buff, 1, 1);
-    buff = "Michele!";
-    writeText(buff, 1, 27);
+  char *buff = "Hallo";
+  // Set display:
+  clear();
+  selectFont(FONT10x16_1);
+  writeText(buff, 1, 1);
+  buff = "Michele!";
+  writeText(buff, 1, 27);
 
-    // GL init:
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-    glutCreateWindow("cpi_dogl emu");
+  // GL init:
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+  glutCreateWindow("cpi_dogl emu");
 
-    glutDisplayFunc(display);
+  glutDisplayFunc(display);
 
-    glutMainLoop();
+  glutMainLoop();
 
-    return 0;
+  return 0;
 }

@@ -3,9 +3,40 @@
 
 extern const unsigned char fontListe[34][3];
 
-extern char font20[256][32];
+extern const char font0[256][6];
+extern const char font1[256][6];
+extern const char font2[256][12];
+extern const char font3[256][12];
+extern const char font4[256][8];
+extern const char font5[256][8];
+extern const char font6[256][10];
+extern const char font7[256][10];
+extern const char font8[256][8];
+extern const char font9[256][8];
+extern const char font10[256][12];
+extern const char font11[256][12];
+extern const char font12[256][12];
+extern const char font13[256][12];
+extern const char font14[256][12];
+extern const char font15[256][12];
+extern const char font16[256][14];
+extern const char font17[256][14];
+extern const char font18[256][8];
+extern const char font19[256][8];
+extern const char font20[256][32];
+extern const char font21[256][32];
+extern const char font22[256][32];
+extern const char font23[256][32];
+extern const char font24[256][40];
+extern const char font25[256][40];
 extern const char font26[256][52];
-// TODO: add remaining fonts...
+extern const char font27[256][52];
+extern const char font28[256][108];
+extern const char font29[256][108];
+extern const char font30[256][120];
+extern const char font31[256][120];
+extern const char font32[256][212];
+extern const char font33[256][212];
 
 #ifndef FONT_LIST_H
 #define FONT_LIST_H

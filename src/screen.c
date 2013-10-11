@@ -23,8 +23,9 @@ void clear() {
   }
 }
 
-void initFont(int fontId, int fontSize, char *buf) {
+void initFont(int fontId, char *buf) {
   int i;
+  int fontSize = fontListe[fontId][2];
   fontData[fontId] = malloc(256*sizeof(char *));
   for (i=0; i<256; i++) {
     fontData[fontId][i] = malloc(fontSize*sizeof(char));
@@ -35,9 +36,41 @@ void initFont(int fontId, int fontSize, char *buf) {
 
 void initFonts() {
   fontData = malloc(MAX_FONTS*sizeof(char *));
-  initFont(20, 32, (char *)font20);
-  initFont(26, 52, (char *)font26);
-  // TODO Add remaining fonts...
+
+  initFont(0, (char *)font0);
+  initFont(1, (char *)font1);
+  initFont(2, (char *)font2);
+  initFont(3, (char *)font3);
+  initFont(4, (char *)font4);
+  initFont(5, (char *)font5);
+  initFont(6, (char *)font6);
+  initFont(7, (char *)font7);
+  initFont(8, (char *)font8);
+  initFont(9, (char *)font9);
+  initFont(10, (char *)font10);
+  initFont(11, (char *)font11);
+  initFont(12, (char *)font12);
+  initFont(13, (char *)font13);
+  initFont(14, (char *)font14);
+  initFont(15, (char *)font15);
+  initFont(16, (char *)font16);
+  initFont(17, (char *)font17);
+  initFont(18, (char *)font18);
+  initFont(19, (char *)font19);
+  initFont(20, (char *)font20);
+  initFont(21, (char *)font21);
+  initFont(22, (char *)font22);
+  initFont(23, (char *)font23);
+  initFont(24, (char *)font24);
+  initFont(25, (char *)font25);
+  initFont(26, (char *)font26);
+  initFont(27, (char *)font27);
+  initFont(28, (char *)font28);
+  initFont(29, (char *)font29);
+  initFont(30, (char *)font30);
+  initFont(31, (char *)font31);
+  initFont(32, (char *)font32);
+  initFont(33, (char *)font33);
 }
 
 void selectFont(int newFontId) {
