@@ -14,6 +14,7 @@ extern int fontLength;
 #define DOG_SCREEN
 void clear();
 
+void initFonts();
 void selectFont(int fontId);
 void setChar(char character, int xpos, int ypos);
 void writeText(char *buff, int xpos, int ypos);
