@@ -3,6 +3,7 @@
 
 extern const unsigned char fontListe[34][3];
 
+extern const char font20[256][32];
 extern const char font26[256][52];
 // TODO: add remaining fonts
 

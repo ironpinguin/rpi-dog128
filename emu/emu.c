@@ -28,12 +28,12 @@ renderQuad(float x1, float y1, float x2, float y2)
     float z = 0.0;
 
     glBegin(GL_QUADS);
-    
+
     glVertex3f(x1, y1, z);
     glVertex3f(x2, y1, z);
     glVertex3f(x2, y2, z);
     glVertex3f(x1, y2, z);
-    
+
     glEnd();
 }
 
@@ -49,7 +49,7 @@ renderDisplayPixel(float y, float x, float r, float g, float b)
     float offsetx     = XOFFSET + x * sizex;
     float offsety     = YOFFSET - y * sizey;
 
-    renderQuad(offsetx, offsety, offsetx + sizex, offsety - sizey); 
+    renderQuad(offsetx, offsety, offsetx + sizex, offsety - sizey);
 }
 
 static void
@@ -81,8 +81,8 @@ main(int argc, char * argv[])
     char *buff = "Hallo";
     // Set display:
     clear();
-    selectFont(FONT16x26_1);
-    writeText(buff, 1, 1); 
+    selectFont(FONT10x16_1);
+    writeText(buff, 1, 1);
     buff = "Michele!";
     writeText(buff, 1, 27);
 

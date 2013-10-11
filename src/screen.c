@@ -39,7 +39,7 @@ void setChar(char character, int xpos, int ypos)
 
   startXPosition = xpos;
   for (x = 0; x < fontLength; x++) {
-    byte = font26[(int)character][x];
+    byte = font20[(int)character][x];
     // fix for fonts with lesser then 8 width.
     if (fontWidth < 8) {
       bits = fontWidth;
@@ -65,7 +65,7 @@ void writeText(char *buff, int xpos, int ypos)
 {
   int len, x;
   len = strlen(buff);
-  
+
   for (x=0; x < len; x++) {
     if (x != 0) xpos += fontWidth;
     setChar(buff[x], xpos, ypos);
