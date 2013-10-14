@@ -6,6 +6,8 @@ int main()
 {
   char *buff = "Hallo";
 
+  initFonts();
+
   init();
   selectFont(FONT16x26_1);
   pwmWrite(LED, 250);

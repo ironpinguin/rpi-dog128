@@ -1,4 +1,6 @@
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "screen.h"
 
@@ -88,6 +90,7 @@ void setChar(char character, int xpos, int ypos) {
 
   startXPosition = xpos;
   for (x = 0; x < fontLength; x++) {
+    printf("trace font %i , char %c [%i] and x %i\n", fontId, character, (int)character, x);
     byte = fontData[fontId][(int)character][x];
     // fix for fonts with lesser then 8 width.
     if (fontWidth < 8) {

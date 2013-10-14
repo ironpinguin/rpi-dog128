@@ -93,6 +93,7 @@ extern void init();
 
 extern void clear();
 
+extern void initFonts();
 extern void selectFont(int fontId);
 extern void setChar(char character, int xpos, int ypos);
 extern void writeText(char *buff, int xpos, int ypos);
