@@ -8,7 +8,7 @@ int main()
 
   initFonts();
 
-  init();
+  init(0, 1, 2, 0);
   selectFont(FONT16x26_1);
   pwmWrite(LED, 250);
   clear();

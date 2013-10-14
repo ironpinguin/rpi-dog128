@@ -1,10 +1,22 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "wiringPi.h"
 #include "wiringPiSPI.h"
 
 #ifndef DOGL_H
 #define DOGL_H
+
+struct Configuration
+{
+	int di;
+	int led; 
+	int reset;
+	int spiCS;
+};
+
+extern struct Configuration dog128config;
 
 // GPIO PINs numbering from wiringPi
 #define DI    0
@@ -86,7 +98,11 @@
 
 extern void show();
 
-extern void init();
+extern void init(int di, int led, int reset, int spiCS);
+extern void backlight(int value);
+extern void contrast(int value);
+extern void displaynormal(bool value);
+extern void invert();
 
 #ifndef DOG_SCREEN
 #define DOG_SCREEN
@@ -97,6 +113,10 @@ extern void initFonts();
 extern void selectFont(int fontId);
 extern void setChar(char character, int xpos, int ypos);
 extern void writeText(char *buff, int xpos, int ypos);
+extern void setPenColor(int color);
+extern void dot(int xpos, int ypos);
+extern void line(int startxpos, int startypos, int endxpos, int endypos);
+extern void rect(int startxpos, int startypos, int endxpos, int endypos, bool full);
 
 #endif /* DOG_SCREEN */
 

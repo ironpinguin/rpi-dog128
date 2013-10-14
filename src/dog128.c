@@ -1,12 +1,16 @@
 #include "dog128.h"
 #include "screen.h"
 
+bool dog128init = 0;
+
+struct Configuration dog128config;
+
 /*
  * internal function to set the dogl|m128 display in write mode.
  */
 void writeMode()
 {
-  digitalWrite(DI, 1);
+  digitalWrite(dog128config.di, 1);
 }
 
 /*
@@ -14,7 +18,7 @@ void writeMode()
  */
 void cmdMode()
 {
-  digitalWrite(DI, 0);
+  digitalWrite(dog128config.di, 0);
 }
 
 /*
@@ -25,11 +29,11 @@ void setAdr(page, colhi, collo)
   unsigned char cmd;
   cmdMode();
   cmd = CMDSETPAGEADR + page;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(dog128config.spiCS, &cmd, 1);
   cmd = CMDSETCOLADRHI + colhi;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(dog128config.spiCS, &cmd, 1);
   cmd = CMDSETCOLADRLO + collo;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(dog128config.spiCS, &cmd, 1);
 }
 
 /*
@@ -59,52 +63,107 @@ void show()
   {
     setAdr(page, 0, 0);
     writeMode();
-    wiringPiSPIDataRW(0, line[page], 128);
+    wiringPiSPIDataRW(dog128config.spiCS, line[page], 128);
   }
 }
 
 /*
  * external function to initialing the dogl display in only 3.3V not flipped.
  */ 
-void init()
+void init(int di, int led, int reset, int spiCS)
 {
   unsigned char cmd;
 
+  dog128config.di = di;
+  dog128config.led = led;
+  dog128config.reset = reset;
+  dog128config.spiCS = spiCS;
+
   wiringPiSetup();
 
-  pinMode(DI, OUTPUT);
-  pinMode(LED, PWM_OUTPUT);
-  pinMode(RESET, OUTPUT);
-  digitalWrite(RESET, 1);
-  wiringPiSPISetup(0, 10000000);
+  pinMode(di, OUTPUT);
+  pinMode(led, PWM_OUTPUT);
+  pinMode(reset, OUTPUT);
+  digitalWrite(reset, 1);
+  wiringPiSPISetup(spiCS, 10000000);
   cmdMode();
   cmd = CMDSETSTARTLINE;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDADCREVERSE;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDCOMOUTMODE;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDDISPLAYNORMAL;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDSETLCDBIAS;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDSETPOWERCTRL;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDSETBOOSTERRATIO;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDSETBOOSTERRATIOVAL;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDSETRESISTORRATIO + 7;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDSETVOLMODE;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDSETVOLMODEVAL + 13;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDINDICATOROFF;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDINDICATORVAL;
-  wiringPiSPIDataRW(0, &cmd, 1);
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
   cmd = CMDDISPLON;
-  wiringPiSPIDataRW(0, &cmd, 1);
-  
+  wiringPiSPIDataRW(spiCS, &cmd, 1);
+
+  writeMode();
+
+  dog128init = true;
+}
+
+void backlight(int value) {
+  if (value < 0 || value > 100) {
+    // TODO error handling
+    return;
+  }
+  pwmWrite(dog128config.led, abs(2.55 * value));
+}
+
+void contrast(int value) {
+  unsigned char cmd;
+  if (value < 5 || value > 25) {
+    // TODO error handling
+    return;
+  }
+  cmdMode();
+  cmd = CMDSETVOLMODE;
+  wiringPiSPIDataRW(dog128config.spiCS, &cmd, 1);
+  cmd = CMDSETVOLMODEVAL + value;
+  wiringPiSPIDataRW(dog128config.spiCS, &cmd, 1);
+  writeMode();
+}
+
+void displaynormal(bool value) {
+  unsigned char cmd;
+
+  if (value) {
+    cmd = CMDDISPLAYNORMAL;
+  } else {
+    cmd = CMDDISPLAYREVERSE;
+  }
+  cmdMode();
+  wiringPiSPIDataRW(dog128config.spiCS, &cmd, 1);
+  writeMode();
+}
+
+void invert() {
+  for(int x=0; x < 128; x++) {
+    for(int y=0; y < 64; y++) {
+      if (ram[x][y] == 1) {
+        ram[x][y] = 0;
+      } else {
+        ram[x][y] = 1;
+      }
+    }
+  }
 }

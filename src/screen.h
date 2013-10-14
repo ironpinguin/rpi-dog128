@@ -1,6 +1,10 @@
 #ifndef DOGL_SCREEN
 #define DOGL_SCREEN
 
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
 #include "fonts.h"
 
 extern unsigned char ram[128][64];
@@ -9,6 +13,7 @@ extern unsigned char *font;
 extern int fontWidth;
 extern int fontHight;
 extern int fontLength;
+extern int penColor;
 
 #ifndef DOG_SCREEN
 #define DOG_SCREEN
@@ -18,6 +23,10 @@ void initFonts();
 void selectFont(int fontId);
 void setChar(char character, int xpos, int ypos);
 void writeText(char *buff, int xpos, int ypos);
+void setPenColor(int color);
+void dot(int xpos, int ypos);
+void line(int startxpos, int startypos, int endxpos, int endypos);
+void rect(int startxpos, int startypos, int endxpos, int endypos, bool full);
 
 #endif
 

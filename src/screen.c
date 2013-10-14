@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "screen.h"
 
@@ -13,6 +14,8 @@ int fontWidth;
 int fontHight;
 int fontLength;
 int fontId;
+int penColor = 1;
+
 
 void clear() {
   int y = 0;
@@ -75,6 +78,25 @@ void initFonts() {
   initFont(33, (char *)font33);
 }
 
+void setPenColor(int color) {
+  if (color < 0 && color > 1) {
+    // TODO error handling;
+    return;
+  }
+
+  penColor = color;
+}
+
+bool positionCheck(int y, int x) {
+  if (x > 0 && x < 127) {
+    if (y > 0 && y < 63) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 void selectFont(int newFontId) {
   fontId = newFontId;
   fontWidth = fontListe[fontId][0];
@@ -87,6 +109,12 @@ void setChar(char character, int xpos, int ypos) {
   int value, position = 0, startXPosition;
   unsigned char byte;
   unsigned char bits = 8;
+
+  /** Check if the given start Position is in display range **/
+  if (positionCheck(xpos, ypos) && positionCheck(xpos + fontLength, ypos + fontWidth)) {
+    // TODO Error message.
+    return;
+  }
 
   startXPosition = xpos;
   for (x = 0; x < fontLength; x++) {
@@ -121,5 +149,75 @@ void writeText(char *buff, int xpos, int ypos) {
     if (x != 0)
       xpos += fontWidth;
     setChar(buff[x], xpos, ypos);
+  }
+}
+
+void pen(int color) {
+  if (color == 0 || color == 1) {
+    penColor = color;
+  }
+}
+
+void dot(int xpos, int ypos) {
+  if (positionCheck(xpos, ypos)) {
+    // TODO Error message.
+    return;
+  }
+  ram[xpos][ypos] = penColor;
+}
+
+void line(int startXpos, int startYpos, int endXpos, int endYpos) {
+  int dx, dy, err, sx, sy, e2;
+  if (positionCheck(startXpos, startYpos) && positionCheck(endXpos, endYpos)) {
+    // TODO Error message.
+    return;
+  }
+  dx = abs(endXpos - startXpos);
+  if (startXpos < endXpos) {
+    sx = 1;
+  } else {
+    sx = -1;
+  }
+  dy = -abs(endYpos - startYpos);
+  if (startYpos < endYpos) {
+    sy = 1;
+  } else {
+    sy = -1;
+  }
+  err = dx + dy;
+  while (true) {
+    dot(startXpos, startYpos);
+    if (startXpos == endXpos && startYpos == endYpos) break;
+    e2 = 2*err;
+    if (e2 > dy) {
+      err += dy;
+      startXpos += sx;
+    }
+    if (e2 < dx) {
+      err += dx;
+      startYpos += sy;
+    }
+  }
+}
+
+void rect(int startXpos, int startYpos, int endXpos, int endYpos, bool full) {
+  int x1set, x2set;
+  
+  if (full) {
+    if (startXpos <= endXpos) {
+      x1set = startXpos;
+      x2set = endXpos;
+    } else {
+      x1set = endXpos;
+      x2set = startXpos;
+    }
+    for (int i=x1set; i < x2set + 1; i++) {
+      line(i, startYpos, i, endYpos);
+    }
+  } else {
+    line(startXpos, startYpos, startXpos, endYpos);
+    line(startXpos, startYpos, endXpos, startYpos);
+    line(startXpos, endYpos, endXpos, endYpos);
+    line(endXpos, endYpos, endXpos, startYpos);
   }
 }
