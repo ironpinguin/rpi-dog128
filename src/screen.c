@@ -1,8 +1,3 @@
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdbool.h>
-
 #include "screen.h"
 
 #define MAX_FONTS 100
@@ -202,7 +197,7 @@ void line(int startXpos, int startYpos, int endXpos, int endYpos) {
 
 void rect(int startXpos, int startYpos, int endXpos, int endYpos, bool full) {
   int x1set, x2set;
-  
+
   if (full) {
     if (startXpos <= endXpos) {
       x1set = startXpos;
@@ -220,4 +215,21 @@ void rect(int startXpos, int startYpos, int endXpos, int endYpos, bool full) {
     line(startXpos, endYpos, endXpos, endYpos);
     line(endXpos, endYpos, endXpos, startYpos);
   }
+}
+
+void circle(int centerXpos, int centerYpos, int radius, bool full) {
+  int lx, rx, yt, yb; 
+  if (positionCheck(centerXpos, centerYpos) && 
+      positionCheck(centerXpos + radius, centerYpos + radius) && 
+      positionCheck(centerXpos - radius, centerYpos - radius)) {
+    // TODO error handling.
+    return;
+  }
+  lx = centerXpos - radius;
+  rx = centerXpos + radius;
+  yt = centerYpos - radius;
+  yb = centerYpos + radius;
+  //dot(yt, centerXpos);
+  //dot(yb, centerXpos);
+  // TODO Implement!
 }

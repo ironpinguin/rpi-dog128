@@ -2,5 +2,6 @@ dogl
 *.o
 *.so
 *.a
+*.dylib
 dogl_mock
 emu/emu
