@@ -16,7 +16,7 @@ mock-mac:
 clean:
 	$(MAKE) -C src clean
 	$(MAKE) -C example clean
-	$(MAKE) -C emu
+	$(MAKE) -C emu clean
 
 test test-mock-lib: dogl $(MOCK_LIB)
 	@./test.sh --with-mock-lib

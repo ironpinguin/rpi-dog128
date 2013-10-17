@@ -117,6 +117,7 @@ extern void setPenColor(int color);
 extern void dot(int xpos, int ypos);
 extern void line(int startxpos, int startypos, int endxpos, int endypos);
 extern void rect(int startxpos, int startypos, int endxpos, int endypos, bool full);
+extern void circle(int centerx, int centery, int radius, bool fill);
 
 #endif /* DOG_SCREEN */
 

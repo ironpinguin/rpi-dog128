@@ -27,6 +27,7 @@ void setPenColor(int color);
 void dot(int xpos, int ypos);
 void line(int startxpos, int startypos, int endxpos, int endypos);
 void rect(int startxpos, int startypos, int endxpos, int endypos, bool full);
+void circle(int centerx, int centery, int radius, bool fill);
 
 #endif
 

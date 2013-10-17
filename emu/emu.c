@@ -76,6 +76,7 @@ int main(int argc, char * argv[]) {
   writeText(buff, 1, 1);
   buff = "Michele!";
   writeText(buff, 1, 27);
+  //circle(50, 30, 15, true);
 
   // GL init:
   glutInit(&argc, argv);

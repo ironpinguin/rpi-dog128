@@ -82,14 +82,14 @@ void setPenColor(int color) {
   penColor = color;
 }
 
-bool positionCheck(int y, int x) {
-  if (x > 0 && x < 127) {
-    if (y > 0 && y < 63) {
-      return true;
+bool positionCheck(int x, int y) {
+  if (x >= 0 && x <= 127) {
+    if (y >= 0 && y <= 63) {
+      return false;
     }
   }
 
-  return false;
+  return true;
 }
 
 void selectFont(int newFontId) {
@@ -107,13 +107,12 @@ void setChar(char character, int xpos, int ypos) {
 
   /** Check if the given start Position is in display range **/
   if (positionCheck(xpos, ypos) && positionCheck(xpos + fontLength, ypos + fontWidth)) {
-    // TODO Error message.
+    printf("Out of position CHAR %c at %i:%i\n", character, xpos, ypos); // TODO Error message.
     return;
   }
 
   startXPosition = xpos;
   for (x = 0; x < fontLength; x++) {
-    printf("trace font %i , char %c [%i] and x %i\n", fontId, character, (int)character, x);
     byte = fontData[fontId][(int)character][x];
     // fix for fonts with lesser then 8 width.
     if (fontWidth < 8) {
@@ -217,19 +216,41 @@ void rect(int startXpos, int startYpos, int endXpos, int endYpos, bool full) {
   }
 }
 
-void circle(int centerXpos, int centerYpos, int radius, bool full) {
-  int lx, rx, yt, yb; 
-  if (positionCheck(centerXpos, centerYpos) && 
-      positionCheck(centerXpos + radius, centerYpos + radius) && 
-      positionCheck(centerXpos - radius, centerYpos - radius)) {
-    // TODO error handling.
-    return;
-  }
-  lx = centerXpos - radius;
-  rx = centerXpos + radius;
-  yt = centerYpos - radius;
-  yb = centerYpos + radius;
-  //dot(yt, centerXpos);
-  //dot(yb, centerXpos);
-  // TODO Implement!
+// Purpose:       Draw a circle on a graphic LCD
+// Inputs:        (x,y) - the center of the circle
+//                radius - the radius of the circle
+//                fill - YES or NO
+void circle(int x, int y, int radius, bool fill)
+{
+   signed int a, b, P;
+   a = 0;
+   b = radius;
+   P = 1 - radius;
+
+   do
+   {
+      if(fill)
+      {
+         line(x-a, y+b, x+a, y+b);
+         line(x-a, y-b, x+a, y-b);
+         line(x-b, y+a, x+b, y+a);
+         line(x-b, y-a, x+b, y-a);
+      }
+      else
+      {
+         dot(a+x, b+y);
+         dot(b+x, a+y);
+         dot(x-a, b+y);
+         dot(x-b, a+y);
+         dot(b+x, y-a);
+         dot(a+x, y-b);
+         dot(x-a, y-b);
+         dot(x-b, y-a);
+      }
+
+      if(P < 0)
+         P+= 3 + 2*a++;
+      else
+         P+= 5 + 2*(a++ - b--);
+    } while(a <= b);
 }
