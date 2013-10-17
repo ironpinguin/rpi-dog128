@@ -14,6 +14,7 @@ int reset = 2;
 
 void mockTest() {
     int x, y;
+    printf("DISPLAY:\n");
     for (y=0; y < 64; y++) {
         for(x=0; x < 128; x++) {
             printf("%i", display[x][y]);
@@ -48,10 +49,10 @@ void digitalWrite(int pin, int value) {
     }
 
     if (pin == 0 && value == 0) {
-        printf("COMMAND: ");
+        printf("SET COMMAND\n");
     }
     if (pin == 0 && value == 1) {
-        printf("WriteDisplay: \n");
+        printf("SET WRITE\n");
     }
 }
 
@@ -81,11 +82,13 @@ int wiringPiSPIGetFd (int channel) {
 int wiringPiSPIDataRW(int channel, unsigned char *data, int len) {
     int c, cmd;
     if (modus == 0) {
+        printf("COMMAND: ");
         cmd = (int)data[0];
         if (cmd <= CMDSETPAGEADR+7 && cmd >= CMDSETPAGEADR) {
             page = cmd - CMDSETPAGEADR;
         }
     } else {
+        printf("WIRTE: ");
         writePage(data, len);
     }
 
