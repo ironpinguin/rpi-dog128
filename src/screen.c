@@ -254,3 +254,97 @@ void circle(int x, int y, int radius, bool fill)
          P+= 5 + 2*(a++ - b--);
     } while(a <= b);
 }
+
+/*
+ * ellipse:
+ *  Fast ellipse drawing algorithm by 
+ *      John Kennedy
+ *  Mathematics Department
+ *  Santa Monica College
+ *  1900 Pico Blvd.
+ *  Santa Monica, CA 90405
+ *  jrkennedy6@gmail.com
+ *  -Confirned in email this algorithm is in the public domain -GH-
+ *********************************************************************************
+ */
+
+static void plot4ellipsePoints (int cx, int cy, int x, int y, bool filled)
+{
+  if (filled)
+  {
+    line(cx + x, cy + y, cx - x, cy + y);
+    line(cx - x, cy - y, cx + x, cy - y);
+  }
+  else
+  {
+    dot(cx + x, cy + y);
+    dot(cx - x, cy + y);
+    dot(cx - x, cy - y);
+    dot(cx + x, cy - y);
+  }
+}
+
+void ellipse (int cx, int cy, int xRadius, int yRadius, int filled)
+{
+  int x, y ;
+  int xChange, yChange, ellipseError ;
+  int twoAsquare, twoBsquare ;
+  int stoppingX, stoppingY ;
+
+  twoAsquare = 2 * xRadius * xRadius ;
+  twoBsquare = 2 * yRadius * yRadius ;
+
+  x = xRadius ;
+  y = 0 ;
+
+  xChange = yRadius * yRadius * (1 - 2 * xRadius) ;
+  yChange = xRadius * xRadius ;
+
+  ellipseError = 0 ;
+  stoppingX    = twoBsquare * xRadius ;
+  stoppingY    = 0 ;
+
+  while (stoppingX >= stoppingY)  // 1st set of points
+  {
+    plot4ellipsePoints(cx, cy, x, y, filled) ;
+    ++y ;
+    stoppingY    += twoAsquare ;
+    ellipseError += yChange ;
+    yChange      += twoAsquare ;
+
+    if ((2 * ellipseError + xChange) > 0 )
+    {
+      --x ;
+      stoppingX    -= twoBsquare ;
+      ellipseError += xChange ;
+      xChange      += twoBsquare ;
+    }
+  }
+
+  x = 0 ;
+  y = yRadius ;
+
+  xChange = yRadius * yRadius ;
+  yChange = xRadius * xRadius * (1 - 2 * yRadius) ;
+
+  ellipseError = 0 ;
+  stoppingX    = 0 ;
+  stoppingY    = twoAsquare * yRadius ;
+
+  while (stoppingX <= stoppingY)  //2nd set of points
+  {
+    plot4ellipsePoints (cx, cy, x, y, filled) ;
+    ++x ;
+    stoppingX    += twoBsquare ;
+    ellipseError += xChange ;
+    xChange      += twoBsquare ;
+
+    if ((2 * ellipseError + yChange) > 0 )
+    {
+      --y ;
+      stoppingY -= twoAsquare ;
+      ellipseError += yChange ;
+      yChange += twoAsquare ;
+    }
+  }
+}

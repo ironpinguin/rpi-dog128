@@ -118,6 +118,7 @@ extern void dot(int xpos, int ypos);
 extern void line(int startxpos, int startypos, int endxpos, int endypos);
 extern void rect(int startxpos, int startypos, int endxpos, int endypos, bool full);
 extern void circle(int centerx, int centery, int radius, bool fill);
+extern void ellipse (int cx, int cy, int xRadius, int yRadius, int filled);
 
 #endif /* DOG_SCREEN */
 

@@ -4,6 +4,9 @@
 
 #define CMDSETPAGEADR 0xB0
 
+#define DISPLAYFILE "display.log"
+#define COMMANDFILE "command.log"
+
 unsigned char display[128][64];
 int modus = 0;
 int page = 0;
@@ -11,17 +14,28 @@ int page = 0;
 int di = 0;
 int led = 1;
 int reset = 2;
+FILE *displayfd;
+FILE *commandfd;
+
+FILE *checkAndOpenFile(FILE *fd, char* file)
+{
+    if (fd == NULL) {
+        fd = fopen(file, "w");
+    }
+
+    return fd;
+}
 
 void mockTest() {
     int x, y;
-    printf("DISPLAY:\n");
+    displayfd = checkAndOpenFile(displayfd, DISPLAYFILE);
+    fprintf(displayfd, "DISPLAY:\n");
     for (y=0; y < 64; y++) {
         for(x=0; x < 128; x++) {
-            printf("%i", display[x][y]);
+            fprintf(displayfd, "%i", display[x][y]);
         }
-        printf("\n");
+        fprintf(displayfd, "\n");
     }
-    printf("\n");
 }
 
 void writePage(unsigned char *data, int len) {
@@ -43,16 +57,17 @@ int digitalRead(int pin) {
 }
 
 void digitalWrite(int pin, int value) {
-//    printf("PIN %u => VALUE %u\n", pin, value);
+    commandfd = checkAndOpenFile(commandfd, COMMANDFILE);
+
     if (pin == di) {
         modus = value;
     }
 
     if (pin == 0 && value == 0) {
-        printf("SET COMMAND\n");
+        fprintf(commandfd, "SET COMMAND\n");
     }
     if (pin == 0 && value == 1) {
-        printf("SET WRITE\n");
+        fprintf(commandfd, "SET WRITE\n");
     }
 }
 
@@ -81,21 +96,23 @@ int wiringPiSPIGetFd (int channel) {
 
 int wiringPiSPIDataRW(int channel, unsigned char *data, int len) {
     int c, cmd;
+
+    commandfd = checkAndOpenFile(commandfd, COMMANDFILE);
     if (modus == 0) {
-        printf("COMMAND: ");
+        fprintf(commandfd, "COMMAND: ");
         cmd = (int)data[0];
         if (cmd <= CMDSETPAGEADR+7 && cmd >= CMDSETPAGEADR) {
             page = cmd - CMDSETPAGEADR;
         }
     } else {
-        printf("WIRTE: ");
+        fprintf(commandfd, "WIRTE: ");
         writePage(data, len);
     }
 
     for (c = 0; c < len; c++) {
-        printf("%X", data[c]);
+        fprintf(commandfd, "%X", data[c]);
     }
-    printf("\n");
+    fprintf(commandfd, "\n");
     if (page == 7 && modus == 1) {
         mockTest();
     }

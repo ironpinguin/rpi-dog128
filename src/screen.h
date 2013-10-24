@@ -28,6 +28,7 @@ void dot(int xpos, int ypos);
 void line(int startxpos, int startypos, int endxpos, int endypos);
 void rect(int startxpos, int startypos, int endxpos, int endypos, bool full);
 void circle(int centerx, int centery, int radius, bool fill);
+void ellipse (int cx, int cy, int xRadius, int yRadius, int filled);
 
 #endif
 

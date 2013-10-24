@@ -14,4 +14,4 @@ fonts: ../src/fonts.h ../src/fonts.c
 	$(CC) -c -o fonts.o ../src/fonts.c
 
 clean:
-	rm *.o *~ emu
+	rm *~ emu

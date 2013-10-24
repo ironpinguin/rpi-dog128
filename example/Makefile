@@ -36,7 +36,7 @@ dogl: $(OBJ)
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c $<
 
 clean:
-	rm $(OBJ)
+	rm dogl
 
 test test-mock-lib: dogl $(MOCK_LIB)
 	@./test.sh --with-mock-lib

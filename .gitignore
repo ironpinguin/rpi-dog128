@@ -5,3 +5,5 @@ dogl
 *.dylib
 dogl_mock
 emu/emu
+*.log
+tests

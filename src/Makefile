@@ -46,7 +46,10 @@ $(MOCK_LIB): $(MOCK_OBJ)
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c $<
 
 clean:
-	rm *.a *.so wiringpimock.o $(OBJ)
+	rm *.a *.so tests.o tests wiringpimock.o $(OBJ)
+
+tests: tests.o
+	$(CC) -o $@ *.o $(LIB_DIR) $(INC_DIR)
 
 test test-mock-lib: dogl $(MOCK_LIB)
 	@./test.sh --with-mock-lib
