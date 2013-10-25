@@ -22,11 +22,13 @@ OBJ = $(SRC:.c=.o)
 
 mock: dog128_mock_static dog128_mock mock_lib
 
+dog128: libdog128.a libdog128.so
+
 $(DOG128_SLIB): $(OBJ)
 	ar rs $@ $(OBJ)
 
-$(DOG128_LIB): $(DOG128_OBJ) screen.o fonts.o
-	$(CC) -shared -o $@ $(DOG128_OBJ) screen.o fonts.o
+$(DOG128_LIB): $(OBJ)
+	$(CC) -shared -o $@ $(OBJ) -lwiringPi
 
 dog128_mock: $(OBJ) $(MOCK_LIB_STATIC)
 	$(CC) -shared -o $(DOG128_LIB) $(OBJ) $(MOCK_LIB_STATIC) -lwiringPi_mock -L.
