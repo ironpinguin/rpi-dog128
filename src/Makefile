@@ -15,7 +15,7 @@ MOCK_LIB = libwiringPi_mock.$(SHLIB_EXT)
 MOCK_LIB_STATIC = libwiringPi_mock.a
 
 LD_FLAGS = $(LIB_DIR) $(LIBS)
-CFLAGS = -Wall -g $(INC_DIR) -fPIC
+CFLAGS = -Wall -g $(INC_DIR) -fPIC -std=c99
 
 SRC = dog128.c screen.c fonts.c
 OBJ = $(SRC:.c=.o)
