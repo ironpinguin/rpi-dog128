@@ -12,16 +12,14 @@ struct Configuration
 {
 	int di;
 	int led; 
-	int reset;
 	int spiCS;
 };
 
 extern struct Configuration dog128config;
 
 // GPIO PINs numbering from wiringPi
-#define DI    0
+#define DI    6
 #define LED   1
-#define RESET 2
 
 // LCD display commands
 #define CMDDISPLOFF 0xAE
@@ -98,7 +96,7 @@ extern struct Configuration dog128config;
 
 extern void show();
 
-extern void init(int di, int led, int reset, int spiCS);
+extern void init(int di, int led, int spiCS);
 extern void backlight(int value);
 extern void contrast(int value);
 extern void displaynormal(bool value);

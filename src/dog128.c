@@ -70,21 +70,18 @@ void show()
 /*
  * external function to initialing the dogl display in only 3.3V not flipped.
  */
-void init(int di, int led, int reset, int spiCS)
+void init(int di, int led, int spiCS)
 {
   unsigned char cmd;
 
   dog128config.di = di;
   dog128config.led = led;
-  dog128config.reset = reset;
   dog128config.spiCS = spiCS;
 
   wiringPiSetup();
 
   pinMode(di, OUTPUT);
   pinMode(led, PWM_OUTPUT);
-  pinMode(reset, OUTPUT);
-  digitalWrite(reset, 1);
   wiringPiSPISetup(spiCS, 10000000);
   cmdMode();
   cmd = CMDSETSTARTLINE;
