@@ -38,6 +38,8 @@ extern const char font31[256][120];
 extern const char font32[256][212];
 extern const char font33[256][212];
 
+extern char generatedFont[2784];
+
 #ifndef FONT_LIST_H
 #define FONT_LIST_H
 

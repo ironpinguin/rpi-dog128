@@ -24,7 +24,7 @@ void cmdMode()
 /*
  * internal function to set the position for the next writing pixels.
  */
-void setAdr(page, colhi, collo)
+void setAdr(int page, int colhi, int collo)
 {
   unsigned char cmd;
   cmdMode();
@@ -69,7 +69,7 @@ void show()
 
 /*
  * external function to initialing the dogl display in only 3.3V not flipped.
- */ 
+ */
 void init(int di, int led, int reset, int spiCS)
 {
   unsigned char cmd;

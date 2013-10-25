@@ -1,5 +1,7 @@
 #include "screen.h"
 
+#include <string.h>
+
 #define MAX_FONTS 100
 
 unsigned char ram[128][64];
@@ -135,6 +137,38 @@ void setChar(char character, int xpos, int ypos) {
   }
 }
 
+void setCharVertical(char character, int xpos, int ypos) {
+
+  int height = 16;
+  int width  = 14;
+  int screenx, screeny;
+  int localPixelOffset;
+  int localByteOffset;
+  unsigned char localBitOffset;
+
+  int value = 1;
+
+  // We only have characters from offset 32, first byte is font width so ignore it for now...
+  int fontBufferOffset = ((int)character-32) * 29 + 1;
+
+  for (int x=0;x<width;x++) {
+    for (int y=0;y<height;y++) {
+
+      screenx = xpos + x;
+      screeny = ypos + y;
+      localPixelOffset = x * height + y;
+      localByteOffset  = (localPixelOffset / 8);
+      //printf("(%d,%d) from %d:", y, x, localByteOffset);
+      localBitOffset   = (char)(localPixelOffset % 8);
+      value = ((generatedFont[fontBufferOffset + localByteOffset]) & (1 << localBitOffset));
+      // printf("%d = %d\n", localBitOffset, value);
+
+      ram[screenx][screeny] = value;
+
+    }
+  }
+}
+
 void writeText(char *buff, int xpos, int ypos) {
   int len, x;
   len = strlen(buff);
@@ -144,6 +178,60 @@ void writeText(char *buff, int xpos, int ypos) {
       xpos += fontWidth;
     setChar(buff[x], xpos, ypos);
   }
+}
+
+void writeTextAlt(char *buff, int xpos, int ypos) {
+  int len, x;
+  len = strlen(buff);
+
+  for (x=0; x < len; x++) {
+    if (x != 0)
+      xpos += fontWidth;
+    setCharVertical(buff[x], xpos, ypos);
+  }
+}
+
+const char* getfield(char* line, int num)
+{
+    const char* tok;
+    for (tok = strtok(line, ",");
+            tok && *tok;
+            tok = strtok(NULL, ","))
+    {
+        if (!--num)
+            return tok;
+    }
+    return NULL;
+}
+
+void loadAltFont(char *filename) {
+  FILE* stream = fopen(filename, "r");
+  char line[1024];
+  int dataPoint;
+  int lineNum = 0;
+  char *tmp;
+  //printf("File loaded\n");
+  while (fgets(line, 1024, stream))
+  {
+    printf("New line\n");
+
+
+      for (int i=0;i<29;i++) {
+        tmp = (char *)strdup(line);
+        const char *fieldString = getfield(tmp,i+1);
+        printf ("Field: %s\n", fieldString);
+        sscanf(fieldString, "%x", &dataPoint);
+
+        printf ("Field char: %d\n", dataPoint);
+
+        generatedFont[lineNum * 29 + i] = (char)dataPoint;
+
+        free(tmp);
+      }
+
+      lineNum++;
+  }
+  fclose(stream);
 }
 
 void pen(int color) {
@@ -257,7 +345,7 @@ void circle(int x, int y, int radius, bool fill)
 
 /*
  * ellipse:
- *  Fast ellipse drawing algorithm by 
+ *  Fast ellipse drawing algorithm by
  *      John Kennedy
  *  Mathematics Department
  *  Santa Monica College

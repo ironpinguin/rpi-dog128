@@ -35,6 +35,8 @@
 #include "fonts/8x8_horizontal_LSB_1.h"
 #include "fonts/8x8_horizontal_LSB_2.h"
 
+#include "fonts/14x15_vertical_generated.h"
+
 const unsigned char fontListe[34][3] = {
   {4,6,6},
   {4,6,6},

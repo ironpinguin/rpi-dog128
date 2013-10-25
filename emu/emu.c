@@ -73,10 +73,17 @@ int main(int argc, char * argv[]) {
   // Set display:
   clear();
   selectFont(FONT10x16_1);
-  writeText(buff, 1, 1);
+  loadAltFont("14x16_vertical_generated.txt");
+  writeTextAlt(buff, 1, 1);
   buff = "Michele!";
-  writeText(buff, 1, 27);
+  writeTextAlt(buff, 1, 27);
   //circle(50, 30, 15, true);
+  line(0,45,127,45);
+  ellipse(20, 55, 16, 8, true);
+
+  rect(70, 55, 110, 62, true);
+
+  setCharVertical('~', 40, 50);
 
   // GL init:
   glutInit(&argc, argv);
