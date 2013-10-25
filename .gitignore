@@ -7,3 +7,10 @@ dogl_mock
 emu/emu
 *.log
 tests
+.cproject
+.project
+.settings/
+rpidogl.project
+rpidogl.tags
+rpidogl.workspace
+rpidogl.workspace.session
