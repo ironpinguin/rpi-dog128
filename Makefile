@@ -2,7 +2,6 @@
 all:
 	$(MAKE) -C src
 	$(MAKE) -C example
-	$(MAKE) -C emu
 
 mock:
 	$(MAKE) -C src mock

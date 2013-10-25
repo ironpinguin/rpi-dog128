@@ -1,6 +1,6 @@
 dogl
 *.o
-*.so
+*.so.*
 *.a
 *.dylib
 dogl_mock

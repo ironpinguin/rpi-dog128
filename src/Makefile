@@ -1,5 +1,8 @@
-INC_DIR = -I. -Ifonts -I../lib/wiringPi/wiringPi
-LIB_DIR = -L/usr/local/lib
+INC_DIR=-I. -Ifonts -I../lib/wiringPi/wiringPi
+LIB_DIR=-L/usr/local/lib
+VERSION=1.0
+DESTDIR=/usr
+PREFIX=/local
 
 LIBS = -lwiringPi -pthread
 
@@ -20,14 +23,40 @@ CFLAGS = -Wall -g $(INC_DIR) -fPIC -std=c99
 SRC = dog128.c screen.c fonts.c
 OBJ = $(SRC:.c=.o)
 
-mock: dog128_mock_static dog128_mock mock_lib
+all: $(DOG128_SLIB) $(DOG128_LIB).$(VERSION)
 
-dog128: libdog128.a libdog128.so
+install: install-header install-lib
+
+install-header:
+	@echo "[Install Headers]"
+	@install -m 0755 -d $(DESTDIR)$(PREFIX)/include
+	@install -m 0644 dog128.h $(DESTDIR)$(PREFIX)/include
+	
+install-lib: $(DOG128_LIB).$(VERSION)
+	@echo "[Install Dynamic Lib]"
+	@install -m 0755 -d $(DESTDIR)$(PREFIX)/lib
+	@install -m 0755 $(DOG128_LIB).$(VERSION) $(DESTDIR)$(PREFIX)/lib
+	@ln -sf $(DESTDIR)$(PREFIX)/lib/$(DOG128_LIB).$(VERSION) $(DESTDIR)$(PREFIX)/lib/$(DOG128_LIB)
+	@ldconfig
+
+install-static: $(DOG128_SLIB)
+	@echo "[Install Static Lib]"
+	@install -m 0755 -d $(DESTDIR)$(PREFIX)/lib
+	@install -m 0755 $(DOG128_SLIB) $(DESTDIR)$(PREFIX)/lib
+
+uninstall:
+	@echo "[UnInstall]"
+	@rm -f $(DESTDIR)$(PREFIX)/include/dog128.h
+	@rm -f $(DESTDIR)$(PREFIX)/lib/libdog128.*
+	@rm -f $(DESTDIR)/lib/libdog128.*
+	@ldconfig
+
+mock: dog128_mock_static dog128_mock mock_lib
 
 $(DOG128_SLIB): $(OBJ)
 	ar rs $@ $(OBJ)
 
-$(DOG128_LIB): $(OBJ)
+$(DOG128_LIB).$(VERSION): $(OBJ)
 	$(CC) -shared -o $@ $(OBJ) -lwiringPi
 
 dog128_mock: $(OBJ) $(MOCK_LIB_STATIC)
@@ -51,7 +80,7 @@ clean:
 	rm *.a *.so tests.o tests wiringpimock.o $(OBJ)
 
 tests: tests.o
-	$(CC) -o $@ *.o $(LIB_DIR) $(INC_DIR)
+	$(CC) -o $@ *.o $(LIB_DIR) $(INC_DIR) -lwiringPi
 
 test test-mock-lib: dogl $(MOCK_LIB)
 	@./test.sh --with-mock-lib

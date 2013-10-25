@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 	}
 
 	if (argc > 2) {
-		init(DI, LED, RESET, 0);
+		init(DI, LED, 0);
 		initFonts();
 		command = argv[1];
 		if (strcmp(command, "line") == 0) {

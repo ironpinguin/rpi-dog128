@@ -17,7 +17,7 @@ OBJ = $(SRC:.c=.o)
 all: lib dogl
 
 lib:
-	$(MAKE) -C ../src dog128
+	$(MAKE) -C ../src
 
 mock: mock_lib dogl
 
