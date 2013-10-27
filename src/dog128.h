@@ -20,6 +20,7 @@ extern struct Configuration dog128config;
 // GPIO PINs numbering from wiringPi
 #define DI    6
 #define LED   1
+#define SPICS 0
 
 // LCD display commands
 #define CMDDISPLOFF 0xAE

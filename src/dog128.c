@@ -123,7 +123,7 @@ void backlight(int value) {
     // TODO error handling
     return;
   }
-  pwmWrite(dog128config.led, abs(2.55 * value));
+  pwmWrite(dog128config.led, abs(10.10 * value));
 }
 
 void contrast(int value) {
