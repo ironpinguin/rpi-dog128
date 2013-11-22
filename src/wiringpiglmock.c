@@ -1,4 +1,17 @@
 #include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+#if defined(__APPLE__) && defined(__MACH__)
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
+#include <GLUT/glut.h>
+#else
+#include <GL/gl.h>
+#include <GL/glext.h>
+#include <GL/glut.h>
+#endif
+
 #include "wiringPi.h"
 #include "wiringPiSPI.h"
 
@@ -14,29 +27,6 @@ int page = 0;
 int di = 0;
 int led = 1;
 int reset = 2;
-FILE *displayfd;
-FILE *commandfd;
-
-FILE *checkAndOpenFile(FILE *fd, char* file)
-{
-    if (fd == NULL) {
-        fd = fopen(file, "w");
-    }
-
-    return fd;
-}
-
-void mockTest() {
-    int x, y;
-    displayfd = checkAndOpenFile(displayfd, DISPLAYFILE);
-    fprintf(displayfd, "DISPLAY:\n");
-    for (y=0; y < 64; y++) {
-        for(x=0; x < 128; x++) {
-            fprintf(displayfd, "%i", display[x][y]);
-        }
-        fprintf(displayfd, "\n");
-    }
-}
 
 void writePage(unsigned char *data, int len) {
     int column, row, byte, value;
@@ -57,17 +47,16 @@ int digitalRead(int pin) {
 }
 
 void digitalWrite(int pin, int value) {
-    commandfd = checkAndOpenFile(commandfd, COMMANDFILE);
 
     if (pin == di) {
         modus = value;
     }
 
     if (pin == 0 && value == 0) {
-        fprintf(commandfd, "SET COMMAND\n");
+        // GLMOCK SET COMMAND
     }
     if (pin == 0 && value == 1) {
-        fprintf(commandfd, "SET WRITE\n");
+        // GLMOCK SET WRITE
     }
 }
 
@@ -97,28 +86,47 @@ int wiringPiSPIGetFd (int channel) {
 int wiringPiSPIDataRW(int channel, unsigned char *data, int len) {
     int c, cmd;
 
-    commandfd = checkAndOpenFile(commandfd, COMMANDFILE);
     if (modus == 0) {
-        fprintf(commandfd, "COMMAND: ");
+        // GLMOCK COMMAND
         cmd = (int)data[0];
         if (cmd <= CMDSETPAGEADR+7 && cmd >= CMDSETPAGEADR) {
             page = cmd - CMDSETPAGEADR;
         }
     } else {
-        fprintf(commandfd, "WRITE: ");
+      // GLMOCK WRITE
         writePage(data, len);
     }
 
-    for (c = 0; c < len; c++) {
-        fprintf(commandfd, "%X", data[c]);
-    }
-    fprintf(commandfd, "\n");
     if (page == 7 && modus == 1) {
-        mockTest();
+        // GLMOCK TEST
     }
+
     return 3;
 }
 
+static void displayfunc(void) {
+  glClear(GL_COLOR_BUFFER_BIT);
+  glutSwapBuffers();
+}
+
 int wiringPiSPISetup (int channel, int speed) {
+  int pid, argc = 0;
+
+  pid = fork();
+
+  if (pid == 0) {
+    // Child process, executing the GLUT main loop:
+    glutInit(&argc, NULL);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+    glutCreateWindow("cpi_dogl emu");
+    glutDisplayFunc(displayfunc);
+    glutMainLoop();
+  } else if (pid > 0) {
+    // Init OK, act normally:
     return 3;
+  } else {
+    // Something went totally wrong, TODO log an error:
+    printf ("FORK FAIL.");
+    return -1;
+  }
 }

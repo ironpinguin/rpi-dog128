@@ -17,6 +17,12 @@ MOCK_OBJ = wiringpimock.o
 MOCK_LIB = libwiringPi_mock.$(SHLIB_EXT)
 MOCK_LIB_STATIC = libwiringPi_mock.a
 
+GLMOCK_BIN = dogl_glmock
+GLMOCK_OBJ = wiringpiglmock.o
+GLMOCK_LIB = libwiringPi_glmock.$(SHLIB_EXT)
+GLMOCK_LIB_STATIC = libwiringPi_glmock.a
+GLFLAGS = -lglut -lGL
+
 LD_FLAGS = $(LIB_DIR) $(LIBS)
 CFLAGS = -Wall -g $(INC_DIR) -fPIC -std=c99
 
@@ -53,6 +59,8 @@ uninstall:
 
 mock: dog128_mock_static dog128_mock mock_lib
 
+glmock: dog128_glmock_static dog128_glmock glmock_lib
+
 $(DOG128_SLIB): $(OBJ)
 	ar rs $@ $(OBJ)
 
@@ -72,6 +80,20 @@ mock_lib: $(MOCK_LIB)
 
 $(MOCK_LIB): $(MOCK_OBJ)
 	$(CC) -shared -o $@ $(MOCK_OBJ)
+	
+dog128_glmock: $(OBJ) $(GLMOCK_LIB_STATIC)
+	$(CC) -shared -o $(DOG128_LIB) $(OBJ) $(GLMOCK_LIB_STATIC) -lwiringPi_glmock $(GLFLAGS) -L.
+
+dog128_glmock_static: $(OBJ) $(GLMOCK_LIB_STATIC)
+	ar rs $(DOG128_SLIB) $(OBJ) $(GLMOCK_LIB_STATIC)
+
+$(GLMOCK_LIB_STATIC): $(GLMOCK_OBJ)
+	ar rs $@ $(GLMOCK_OBJ)
+
+glmock_lib: $(GLMOCK_LIB)
+
+$(GLMOCK_LIB): $(GLMOCK_OBJ)
+	$(CC) -shared -o $@ $(GLMOCK_OBJ)
 
 .c.o:
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c $<

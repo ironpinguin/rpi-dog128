@@ -7,6 +7,11 @@ mock:
 	$(MAKE) -C src mock
 	$(MAKE) -C example
 	$(MAKE) -C emu
+	
+glmock:
+	$(MAKE) -C src glmock
+	$(MAKE) -C example
+	$(MAKE) -C emu
 
 mock-mac:
 	$(MAKE) -C src mock
