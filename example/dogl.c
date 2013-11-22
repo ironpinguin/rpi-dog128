@@ -15,8 +15,8 @@ int main()
   clear();
 
   show();
-  
-  writeText(buff, 1, 1); 
+
+  writeText(buff, 1, 1);
   buff = "Alex!";
   writeText(buff, 1, 27);
   //rect(10,10,100,40, false);
