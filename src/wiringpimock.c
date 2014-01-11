@@ -87,11 +87,15 @@ int wiringPiSetup () {
 
 int wpiPinToGpio (int wpiPin)
 {
-      return wpiPin & 63;
+    return wpiPin & 63;
 }
 
 int wiringPiSPIGetFd (int channel) {
     return 3;
+}
+
+int wiringPiISR (int pin, int mode, void (*function)(void)) {
+    return 1;
 }
 
 int wiringPiSPIDataRW(int channel, unsigned char *data, int len) {
