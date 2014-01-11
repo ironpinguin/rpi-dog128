@@ -19,7 +19,7 @@ all: lib dogl
 lib:
 	$(MAKE) -C ../src
 
-mock: mock_lib dogl
+mock: mock_lib dogl_mock
 
 mock_mac: mock_lib dogl_mac
 
@@ -28,6 +28,9 @@ dogl_mac: $(OBJ)
 
 mock_lib:
 	$(MAKE) -C ../src mock
+
+dogl_mock: $(OBJ)
+	$(CC) -o dogl $(OBJ) $(DOG128_SLIB) $(LD_FLAGS) $(CFLAGS)
 
 dogl: $(OBJ)
 	$(CC) -o $@ $(OBJ) $(DOG128_SLIB) $(LD_FLAGS)
