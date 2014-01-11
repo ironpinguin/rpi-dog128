@@ -11,7 +11,7 @@ unsigned char display[128][64];
 int modus = 0;
 int page = 0;
 
-int di = 0;
+int di = 6;
 int led = 1;
 int reset = 2;
 FILE *displayfd;
