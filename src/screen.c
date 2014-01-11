@@ -217,7 +217,7 @@ void loadAltFont(char *filename) {
 
 
       for (int i=0;i<29;i++) {
-    	tmp = strdup(line);
+    	tmp = (char *) strndup(line, strlen(line));
         const char *fieldString = getfield(tmp,i+1);
         printf ("Field: %s\n", fieldString);
         sscanf(fieldString, "%x", &dataPoint);

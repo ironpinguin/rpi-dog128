@@ -1,6 +1,6 @@
 #ifndef DOGL_SCREEN
 #define DOGL_SCREEN
-
+#define _GNU_SOURCE 1
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>

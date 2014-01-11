@@ -99,7 +99,7 @@ $(GLMOCK_LIB): $(GLMOCK_OBJ)
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c $<
 
 clean:
-	rm *.a *.so tests.o tests wiringpimock.o $(OBJ)
+	rm -rf $(DOG128_SLIB) $(MOCK_LIB) $(GLMOCK_LIB) tests.o tests $(OBJ) $(MOCK_LIB_STATIC) $(GLMOCK_LIB_STATIC)
 
 tests: tests.o
 	$(CC) -o $@ *.o $(LIB_DIR) $(INC_DIR) -lwiringPi

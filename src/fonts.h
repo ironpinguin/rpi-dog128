@@ -1,6 +1,6 @@
 #ifndef FONTS_H
 #define FONTS_H
-
+#define _GNU_SOURCE 1
 extern const unsigned char fontListe[34][3];
 
 extern const char font0[256][6];
