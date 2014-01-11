@@ -21,7 +21,7 @@ lib:
 
 mock: mock_lib dogl_mock
 
-glmock: glmock_lib dogl
+glmock: glmock_lib dogl_mock
 
 mock_mac: mock_lib dogl_mac
 
@@ -32,7 +32,7 @@ mock_lib:
 	$(MAKE) -C ../src mock
 
 dogl_mock: $(OBJ)
-	$(CC) -o dogl $(OBJ) $(DOG128_SLIB) $(LD_FLAGS) $(CFLAGS)
+	$(CC) -o dogl $(OBJ) $(LD_FLAGS) $(CFLAGS)
 
 glmock_lib:
 	$(MAKE) -C ../src glmock
