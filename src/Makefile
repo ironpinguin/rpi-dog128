@@ -71,7 +71,7 @@ dog128_mock: $(OBJ) $(MOCK_LIB_STATIC)
 	$(CC) -shared -o $(DOG128_LIB) $(OBJ) $(MOCK_LIB_STATIC) -lwiringPi_mock -L.
 
 dog128_mock_static: $(OBJ) $(MOCK_LIB_STATIC)
-	ar rs $(DOG128_SLIB) $(OBJ) $(MOCK_LIB_STATIC)
+	ar rs $(MOCK_LIB_STATIC) $(OBJ) $(MOCK_OBJ)
 
 $(MOCK_LIB_STATIC): $(MOCK_OBJ)
 	ar rs $@ $(MOCK_OBJ)
@@ -85,7 +85,7 @@ dog128_glmock: $(OBJ) $(GLMOCK_LIB_STATIC)
 	$(CC) -shared -o $(DOG128_LIB) $(OBJ) $(GLMOCK_LIB_STATIC) -lwiringPi_glmock $(GLFLAGS) -L.
 
 dog128_glmock_static: $(OBJ) $(GLMOCK_LIB_STATIC)
-	ar rs $(DOG128_SLIB) $(OBJ) $(GLMOCK_LIB_STATIC)
+	ar rs $(GLMOCK_LIB_STATIC) $(OBJ) $(GLMOCK_OBJ)
 
 $(GLMOCK_LIB_STATIC): $(GLMOCK_OBJ)
 	ar rs $@ $(GLMOCK_OBJ)

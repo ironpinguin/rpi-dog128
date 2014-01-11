@@ -5,11 +5,11 @@ all:
 
 mock:
 	$(MAKE) -C src mock
-	$(MAKE) -C example dogl_mock
+	$(MAKE) -C example mock
 	
 glmock:
 	$(MAKE) -C src glmock
-	$(MAKE) -C example dogl_mock
+	$(MAKE) -C example glmock
 
 mock-mac:
 	$(MAKE) -C src mock
