@@ -77,6 +77,9 @@ void pwmWrite(int pin, int value) {
 void pinMode(int pin, int mode) {
 }
 
+void pullUpDnControl(int pin, int pud) {
+}
+
 int wiringPiSetupGpio () {
     return 1;
 }
