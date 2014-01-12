@@ -1,3 +1,4 @@
+#define _XOPEN_SOURCE 1
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -114,7 +115,7 @@ int wiringPiISR (int pin, int mode, void (*function)(void)) {
 }
 
 int wiringPiSPIDataRW(int channel, unsigned char *data, int len) {
-    int c, cmd;
+    int cmd;
 
     if (modus == 0) {
         // GLMOCK COMMAND
@@ -189,19 +190,19 @@ int wiringPiSPISetup (int channel, int speed) {
   if (pid == 0) {
     // Child process, allocate shared memory executing the GLUT main loop:
 
-  shmid     = shmget(SHMKEY, SHMSIZE, 0666 | IPC_CREAT);
+    shmid = shmget(SHMKEY, SHMSIZE, 0666 | IPC_CREAT);
 
-  if (shmid == -1) {
-    printf("SHMGET ERROR (CHILD)\n");
-  }
+    if (shmid == -1) {
+      printf("SHMGET ERROR (CHILD)\n");
+    }
 
-  display   = shmat(shmid, NULL, 0);
-  if (display == NULL) {
-    printf("SHMAT ERROR (CHILD)\n");
-  }
-  //shmdt(shmid);
+    display   = shmat(shmid, NULL, 0);
+    if (display == NULL) {
+      printf("SHMAT ERROR (CHILD)\n");
+    }
+    //shmdt(shmid);
 
-  glutInit(&argc, NULL);
+    glutInit(&argc, NULL);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
     glutCreateWindow("cpi_dogl emu");
     glutDisplayFunc(displayfunc);
@@ -223,4 +224,6 @@ int wiringPiSPISetup (int channel, int speed) {
     printf ("FORK FAIL.");
     return -1;
   }
+
+  return 0;
 }
