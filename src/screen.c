@@ -108,7 +108,7 @@ void setChar(char character, int xpos, int ypos) {
   unsigned char bits = 8;
 
   /** Check if the given start Position is in display range **/
-  if (positionCheck(xpos, ypos) && positionCheck(xpos + fontLength, ypos + fontWidth)) {
+  if (positionCheck(xpos, ypos) || positionCheck(xpos + fontHight, ypos + fontWidth)) {
     printf("Out of position CHAR %c at %i:%i\n", character, xpos, ypos); // TODO Error message.
     return;
   }
