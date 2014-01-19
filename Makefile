@@ -14,6 +14,13 @@ glmock:
 mock-mac:
 	$(MAKE) -C src mock
 	$(MAKE) -C example mock_mac
+
+install:
+	$(MAKE) -C src install
+
+uninstall:
+	$(MAKE) -C src uninstall
+
 clean:
 	$(MAKE) -C src clean
 	$(MAKE) -C example clean
