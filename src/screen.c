@@ -125,6 +125,13 @@ void setChar(char character, int xpos, int ypos) {
     for (y = 0; y < bits; y++) {
       value = byte&1;
       byte = byte>>1;
+      if (!penColor) {
+          if (value) {
+              value = 0;
+          } else {
+              value = 1;
+          }
+      }
       ram[xpos][ypos] = value;
       position++;
       xpos++;

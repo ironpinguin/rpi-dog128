@@ -15,6 +15,7 @@ int main()
   clear();
 
   show();
+  setPenColor(0);
 
   writeText(buff, 1, 1);
   buff = "Alex!";
