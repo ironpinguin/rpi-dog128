@@ -1,53 +1,7 @@
-#define _XOPEN_SOURCE 1
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
+#define GLMOCK
+#include <SDL/SDL_ttf.h>
 
-#if defined(__APPLE__) && defined(__MACH__)
-#include <OpenGL/gl.h>
-#include <OpenGL/glext.h>
-#include <GLUT/glut.h>
-#else
-#include <GL/gl.h>
-#include <GL/glext.h>
-#include <GL/glut.h>
-#endif
-
-#include "wiringPi.h"
-#include "wiringPiSPI.h"
-
-#define CMDSETPAGEADR 0xB0
-
-#define DISPLAYFILE "display.log"
-#define COMMANDFILE "command.log"
-
-#define PIXEL_WIDTH   128
-#define PIXEL_HEIGHT  64
-
-#define SCREEN_HEIGHT 1.6
-#define SCREEN_WIDTH  2.0
-
-#define XOFFSET       -1.0
-#define YOFFSET       0.8
-
-#define BGCOLOR       0.8,0.8,0.1
-#define PIXEL_COLOR   0.3,0.3,0.3
-
-#define SHMKEY  2014
-#define SHMSIZE 128*64
-
-int shmid;
-
-unsigned char *display;
-
-int modus = 0;
-int page = 0;
-
-int di = 6;
-int led = 1;
-int reset = 2;
+#include "wiringpimock.h"
 
 void writePage(unsigned char *data, int len) {
 
@@ -182,6 +136,11 @@ static void displayfunc(void) {
   glutPostRedisplay();
 }
 
+static void sdlDisplay(void)
+{
+    
+}
+
 int wiringPiSPISetup (int channel, int speed) {
   int pid, argc = 0;
 
@@ -201,6 +160,10 @@ int wiringPiSPISetup (int channel, int speed) {
       printf("SHMAT ERROR (CHILD)\n");
     }
     //shmdt(shmid);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTTHREAD | SDL_INIT_TIMER);
+    TTF_Init();
+    SDL_SetVideoMode(XOFFSET+SCREEN_WIDTH, YOFFSET-SCREEN_HEIGHT, 16, 0);
+    SDL_CreateThread(&sdlDisplay());
 
     glutInit(&argc, NULL);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);

@@ -1,21 +1,4 @@
-#include <stdio.h>
-#include "wiringPi.h"
-#include "wiringPiSPI.h"
-
-#define CMDSETPAGEADR 0xB0
-
-#define DISPLAYFILE "display.log"
-#define COMMANDFILE "command.log"
-
-unsigned char display[128][64];
-int modus = 0;
-int page = 0;
-
-int di = 6;
-int led = 1;
-int reset = 2;
-FILE *displayfd;
-FILE *commandfd;
+#include "wiringpimock.h"
 
 FILE *checkAndOpenFile(FILE *fd, char* file)
 {
