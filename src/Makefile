@@ -7,19 +7,23 @@ PREFIX=/local
 LIBS = -lwiringPi -pthread
 
 SHLIB_EXT = so
+SHLIB_EXT_MAC = dylib
 
 DOG128_SLIB = libdog128.a
 DOG128_OBJ = libdog128.o
 DOG128_LIB = libdog128.$(SHLIB_EXT)
+DOG128_LIB_MAC = libdog128.$(SHLIB_EXT_MAC)
 
 MOCK_BIN = dogl_mock
 MOCK_OBJ = wiringpimock.o
 MOCK_LIB = libwiringPi_mock.$(SHLIB_EXT)
+MOCK_LIB_MAC = libwiringPi_mock.$(SHLIB_EXT_MAC)
 MOCK_LIB_STATIC = libwiringPi_mock.a
 
 GLMOCK_BIN = dogl_glmock
 GLMOCK_OBJ = wiringpiglmock.o
 GLMOCK_LIB = libwiringPi_glmock.$(SHLIB_EXT)
+GLMOCK_LIB_MAC = libwiringPi_glmock.$(SHLIB_EXT_MAC)
 GLMOCK_LIB_STATIC = libwiringPi_glmock.a
 GLFLAGS = -lglut -lGL
 
@@ -59,7 +63,11 @@ uninstall:
 
 mock: dog128_mock_static dog128_mock mock_lib
 
+mock-mac: dog128_mock_static dog128_mock_mac mock_lib
+
 glmock: dog128_glmock_static dog128_glmock glmock_lib
+
+glmock-mac: dog128_glmock_static dog128_glmock_mac glmock_lib
 
 $(DOG128_SLIB): $(OBJ)
 	ar rs $@ $(OBJ)
@@ -69,6 +77,9 @@ $(DOG128_LIB).$(VERSION): $(OBJ)
 
 dog128_mock: $(OBJ) $(MOCK_LIB_STATIC)
 	$(CC) -shared -o $(DOG128_LIB) $(OBJ) $(MOCK_LIB_STATIC) -lwiringPi_mock -L.
+
+dog128_mock_mac: $(OBJ) $(MOCK_LIB_STATIC)
+	$(CC) -shared -o $(DOG128_LIB_MAC) $(OBJ) $(MOCK_LIB_STATIC) -lwiringPi_mock -L.
 
 dog128_mock_static: $(OBJ) $(MOCK_LIB_STATIC)
 	ar rs $(DOG128_SLIB) $(MOCK_LIB_STATIC) $(OBJ) $(MOCK_OBJ)
@@ -83,6 +94,9 @@ $(MOCK_LIB): $(MOCK_OBJ)
 	
 dog128_glmock: $(OBJ) $(GLMOCK_LIB_STATIC)
 	$(CC) -shared -o $(DOG128_LIB) $(OBJ) $(GLMOCK_LIB_STATIC) -lwiringPi_glmock $(GLFLAGS) -L.
+
+dog128_glmock_mac: $(OBJ) $(GLMOCK_LIB_STATIC)
+	$(CC) -shared -o $(DOG128_LIB_MAC) $(OBJ) $(GLMOCK_LIB_STATIC) -lwiringPi_glmock $(GLFLAGS) -L.
 
 dog128_glmock_static: $(OBJ) $(GLMOCK_LIB_STATIC)
 	ar rs $(DOG128_SLIB) $(GLMOCK_LIB_STATIC) $(OBJ) $(GLMOCK_OBJ)

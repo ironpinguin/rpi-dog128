@@ -1,1 +1,1 @@
-LD_LIBRARY_PATH=../src/:$LD_LIBRARY_PATH ./dogl
+LD_LIBRARY_PATH=../src/:$LD_LIBRARY_PATH ./dogl $@
