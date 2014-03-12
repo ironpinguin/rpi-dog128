@@ -26,6 +26,7 @@ GLMOCK_LIB = libwiringPi_glmock.$(SHLIB_EXT)
 GLMOCK_LIB_MAC = libwiringPi_glmock.$(SHLIB_EXT_MAC)
 GLMOCK_LIB_STATIC = libwiringPi_glmock.a
 GLFLAGS = -lglut -lGL
+SDLFLAGS = -D_GNU_SOURCE=1 -D_REENTRANT -I/usr/include/SDL  -lSDL_mixer -lSDL_image -lSDL_ttf -lSDL_gfx -lSDL
 
 LD_FLAGS = $(LIB_DIR) $(LIBS)
 CFLAGS = -Wall -g $(INC_DIR) -fPIC -std=c99
@@ -106,8 +107,11 @@ $(GLMOCK_LIB_STATIC): $(GLMOCK_OBJ)
 
 glmock_lib: $(GLMOCK_LIB)
 
+$(GLMOCK_OBJ): wiringpiglmock.c
+	$(CC) $(CFLAGS) $(SDLFLAGS) -c $<
+
 $(GLMOCK_LIB): $(GLMOCK_OBJ)
-	$(CC) -shared -o $@ $(GLMOCK_OBJ)
+	$(CC) -shared -o $@ $(GLMOCK_OBJ) 
 
 .c.o:
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c $<
