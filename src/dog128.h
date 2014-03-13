@@ -104,6 +104,8 @@ extern void contrast(int value);
 extern void displaynormal(bool value);
 extern void invert();
 
+extern void digitalWrite(int di, value);
+
 #ifndef DOG_SCREEN
 #define DOG_SCREEN
 
